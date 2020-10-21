@@ -6,6 +6,11 @@ import ehu.isad.utils.Sarea;
 public class Book {
     private String isbn;
     private String thumbnail_url;
+
+    public String getIsbn() {
+        return isbn;
+    }
+
     private Details details;
 
     public String getThumbnail_url() {
