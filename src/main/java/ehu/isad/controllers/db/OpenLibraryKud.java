@@ -67,14 +67,14 @@ public class OpenLibraryKud {
         boolean aurkituta=true;
         String isbn = "";
 
-        String query = "select isbn from liburua where izena= '" + izena + "'";
+        String query = "select orrikop from liburua where izena= '" + izena + "'";
         DBKudeatzaile dbKudeatzaile = DBKudeatzaile.getInstantzia();
         ResultSet rs = dbKudeatzaile.execSQL(query);
 
         try {
             while (rs.next()) {
 
-                if (rs.getString("isbn")==""){
+                if (rs.getInt("orrikop")==0){
                     aurkituta = false;
                 }
 
@@ -93,10 +93,19 @@ public class OpenLibraryKud {
         DBKudeatzaile dbKudeatzaile = DBKudeatzaile.getInstantzia();
         ResultSet rs = dbKudeatzaile.execSQL(query);
 
+    }
+
+    public void detailsIpini(String isbn) throws IOException {
+        Book book = new Book();
+        book = book.getBook(isbn);
+
+        String query = "UPDATE liburua SET orrikop=" + book.getDetails().getNumber_of_pages()+", irudipath='"+isbn+"' WHERE isbn="+book.getIsbn();
+        DBKudeatzaile dbKudeatzaile = DBKudeatzaile.getInstantzia();
+        ResultSet rs = dbKudeatzaile.execSQL(query);
+
         this.sartuArg(book);
         this.irudiaGorde(book);
     }
-
 
     private void sartuArg(Book book) {
         DBKudeatzaile dbKudeatzaile = DBKudeatzaile.getInstantzia();
@@ -105,7 +114,7 @@ public class OpenLibraryKud {
                 String query = "INSERT INTO argitaletxea VALUES (\"" + book.getDetails().getPublishers()[i] + "\")";
                 dbKudeatzaile.execSQL(query);
             }
-            String query = "INSERT INTO arglista VALUES (" + book.getIsbn()+")"+ "\"" + book.getDetails().getPublishers()[i]+ "\")";
+            String query = "INSERT INTO arglista VALUES (" + book.getIsbn()+" ,\"" + book.getDetails().getPublishers()[i]+ "\")";
             dbKudeatzaile.execSQL(query);
         }
 
@@ -127,7 +136,10 @@ public class OpenLibraryKud {
 
     private void irudiaGorde(Book book) throws IOException {
         Sarea s = new Sarea();
-        s.irudiaGorde(book.getThumbnail_url(), book.getIsbn());
+        String urlM = book.getThumbnail_url();
+        urlM = urlM.substring(0,urlM.length()-5);
+        urlM = urlM + "M.jpg";
+        s.irudiaGorde(urlM, book.getIsbn());
     }
 
 
@@ -168,4 +180,5 @@ public class OpenLibraryKud {
         }
         return arglista;
     }
+
 }

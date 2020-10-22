@@ -56,12 +56,16 @@ public class Liburuak extends Application {
     }
 
     public void xehetasunakErakutsi(String isbn) {
-        Book book = new Book();
-        book = book.getBook(isbn);
-        xehetKud.datuak(book);
+
+        // Book book = new Book();
+        // book = book.getBook(isbn);
+        xehetKud.datuak(isbn);
         stage.setScene(xehetScene);
         stage.show();
 
+
     }
+
+
 }
 

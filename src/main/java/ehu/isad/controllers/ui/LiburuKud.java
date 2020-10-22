@@ -40,7 +40,10 @@ public class LiburuKud implements Initializable {
     void onClick(ActionEvent event) throws IOException {
         String isbn = OpenLibraryKud.getInstance().lortuisbn(liburuak_combobox.getValue());
         if (!OpenLibraryKud.getInstance().dbBegiratu(liburuak_combobox.getValue())){
-                OpenLibraryKud.getInstance().dbSartu(isbn);
+                //OpenLibraryKud.getInstance().dbSartu(isbn);
+            System.out.println("Liburua ez dago kargatuta");
+            OpenLibraryKud.getInstance().detailsIpini(isbn);
+            System.out.println("kargatuta jeje");
         }
         mainApp.xehetasunakErakutsi(isbn);
     }

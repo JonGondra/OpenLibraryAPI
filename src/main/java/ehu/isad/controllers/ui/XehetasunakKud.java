@@ -48,22 +48,24 @@ public class XehetasunakKud {
         mainApp.mainErakutsi();
     }
 
-    public  void datuak(Book b){
+    public  void datuak(String isbn){
 
-        String info = OpenLibraryKud.getInstance().libdatuak(b.getIsbn());
+        String info = OpenLibraryKud.getInstance().libdatuak(isbn);
         String[] subinfo = info.split(",");
         DatuIzena_lbl.setText(subinfo[0]);
-        List<String> arglista = OpenLibraryKud.getInstance().arglistaLortu(b.getIsbn());
-        for (int i=0; i < arglista.size(); i++){
-            DatuArg_lbl.setText(DatuArg_lbl.getText()+ ", " + arglista.get(0));
+        List<String> arglista = OpenLibraryKud.getInstance().arglistaLortu(isbn);
+        DatuArg_lbl.setText(arglista.get(0));
+        for (int i=1; i < arglista.size(); i++){
+            DatuArg_lbl.setText(DatuArg_lbl.getText()+ ", " + arglista.get(i));
         }
         DatuOrr_lbl.setText(subinfo[1]);
-        String path = Utils.lortuEzarpenak().getProperty("pathtoimages")+b.getIsbn()+".png";
+        String path = Utils.lortuEzarpenak().getProperty("pathtoimages")+subinfo[2]+".png";
         try {
             ImageviewIrudia.setImage(new Image(new FileInputStream(path)));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         /*
         DatuArg_lbl.setText(b.getDetails().getPublishers()[0]);
         String idazleak = "";
